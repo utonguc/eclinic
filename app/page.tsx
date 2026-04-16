@@ -46,26 +46,62 @@ const products = [
   {
     name: "e-Clinic",
     tagline: "Klinik Yönetim Platformu",
+    badge: "Aktif Platform",
     desc: "Klinik ve muayenehane süreçlerini uçtan uca dijitalleştiren bulut tabanlı SaaS platform. Randevu yönetimi, hasta takibi, faturalandırma, anket modülleri ve AI destekli arama özelliğiyle kliniğinizin verimliliğini katlayın.",
-    features: ["Çoklu klinik yönetimi", "AI destekli hasta arama", "Anket & analiz modülü", "Rol bazlı erişim kontrolü", "Gerçek zamanlı raporlama"],
+    features: [
+      { icon: "🏥", text: "Çoklu klinik yönetimi" },
+      { icon: "🤖", text: "AI destekli hasta arama" },
+      { icon: "📊", text: "Anket & analiz modülü" },
+      { icon: "🔐", text: "Rol bazlı erişim kontrolü" },
+      { icon: "📈", text: "Gerçek zamanlı raporlama" },
+    ],
     color: "#3b82f6",
-    gradient: "linear-gradient(135deg, rgba(59,130,246,0.15), rgba(6,182,212,0.08))",
+    colorRgb: "59,130,246",
+    url: "https://eclinic.xshield.com.tr",
+    mockLines: [
+      { w: "60%", c: "#3b82f6" }, { w: "85%", c: "#1e3a5f" }, { w: "45%", c: "#1e3a5f" },
+      { w: "70%", c: "#1e3a5f" }, { w: "55%", c: "#3b82f6" }, { w: "80%", c: "#1e3a5f" },
+    ],
   },
   {
     name: "Signed",
     tagline: "Mail İmza Yönetim Platformu",
+    badge: "Yakında",
     desc: "Kurumsal e-posta imzalarını merkezi olarak yönetin. Marka tutarlılığını sağlayın, kampanya imzaları oluşturun ve tüm çalışanların imzalarını tek bir panelden anlık güncelleyin.",
-    features: ["Merkezi imza yönetimi", "Marka tutarlılığı", "Kampanya imzaları", "Exchange/Google Workspace entegrasyonu", "Çoklu şablon desteği"],
+    features: [
+      { icon: "✉️", text: "Merkezi imza yönetimi" },
+      { icon: "🎨", text: "Marka tutarlılığı" },
+      { icon: "📣", text: "Kampanya imzaları" },
+      { icon: "🔗", text: "Exchange/Google Workspace" },
+      { icon: "📋", text: "Çoklu şablon desteği" },
+    ],
     color: "#8b5cf6",
-    gradient: "linear-gradient(135deg, rgba(139,92,246,0.15), rgba(59,130,246,0.08))",
+    colorRgb: "139,92,246",
+    url: "#iletisim",
+    mockLines: [
+      { w: "75%", c: "#8b5cf6" }, { w: "50%", c: "#2d1b69" }, { w: "90%", c: "#2d1b69" },
+      { w: "65%", c: "#8b5cf6" }, { w: "40%", c: "#2d1b69" }, { w: "70%", c: "#2d1b69" },
+    ],
   },
   {
     name: "ShieldSpot",
     tagline: "Misafir İnterneti Hotspot Platformu",
+    badge: "Yakında",
     desc: "İşletmenizin misafir Wi-Fi altyapısını profesyonelce yönetin. Özelleştirilebilir captive portal, kullanıcı kimlik doğrulama, bant genişliği yönetimi ve detaylı kullanım raporlarıyla misafir internetini kontrol altına alın.",
-    features: ["Özel captive portal tasarımı", "SMS/sosyal medya doğrulama", "Bant genişliği kontrolü", "Detaylı kullanım raporları", "KVKK uyumlu veri yönetimi"],
+    features: [
+      { icon: "📡", text: "Özel captive portal tasarımı" },
+      { icon: "📱", text: "SMS/sosyal medya doğrulama" },
+      { icon: "⚡", text: "Bant genişliği kontrolü" },
+      { icon: "📊", text: "Detaylı kullanım raporları" },
+      { icon: "🛡️", text: "KVKK uyumlu veri yönetimi" },
+    ],
     color: "#06b6d4",
-    gradient: "linear-gradient(135deg, rgba(6,182,212,0.15), rgba(59,130,246,0.08))",
+    colorRgb: "6,182,212",
+    url: "#iletisim",
+    mockLines: [
+      { w: "55%", c: "#06b6d4" }, { w: "80%", c: "#0c4a6e" }, { w: "65%", c: "#0c4a6e" },
+      { w: "90%", c: "#06b6d4" }, { w: "45%", c: "#0c4a6e" }, { w: "75%", c: "#0c4a6e" },
+    ],
   },
 ];
 
@@ -248,7 +284,7 @@ export default function Home() {
       {/* ── ÜRÜNLER ─────────────────────────────────────────────────────────── */}
       <section id="urunler" className="section" style={{ background: "var(--surface)" }}>
         <div className="container">
-          <div style={{ textAlign: "center", marginBottom: 60 }}>
+          <div style={{ textAlign: "center", marginBottom: 64 }}>
             <div className="tag" style={{ display: "inline-flex", marginBottom: 16 }}>
               <span>🚀</span> Yazılım Ürünlerimiz
             </div>
@@ -260,51 +296,123 @@ export default function Home() {
             </p>
           </div>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 40 }}>
             {products.map((p, i) => (
-              <div key={p.name} className="neon-border" style={{
-                padding: "40px 36px",
-                borderRadius: 20,
-                background: p.gradient,
+              <div key={p.name} style={{
+                borderRadius: 24,
+                overflow: "hidden",
+                border: `1px solid rgba(${p.colorRgb},0.25)`,
+                background: `linear-gradient(135deg, rgba(${p.colorRgb},0.07) 0%, rgba(13,27,46,0.95) 60%)`,
                 display: "grid",
-                gridTemplateColumns: i % 2 === 0 ? "1.4fr 1fr" : "1fr 1.4fr",
-                gap: 40,
-                alignItems: "center",
+                gridTemplateColumns: i % 2 === 0 ? "1fr 1fr" : "1fr 1fr",
+                position: "relative",
               }}>
-                <div style={{ order: i % 2 === 0 ? 0 : 1 }}>
-                  <span style={{ fontSize: 12, fontWeight: 700, color: p.color, letterSpacing: "1px", textTransform: "uppercase" }}>
-                    {p.tagline}
-                  </span>
-                  <h3 style={{ fontSize: "clamp(1.6rem, 3vw, 2.2rem)", fontWeight: 800, color: "var(--text)", margin: "10px 0 16px", letterSpacing: "-0.5px" }}>
+                {/* Glow accent */}
+                <div style={{
+                  position: "absolute",
+                  top: i % 2 === 0 ? "-60px" : "auto",
+                  bottom: i % 2 !== 0 ? "-60px" : "auto",
+                  left: i % 2 === 0 ? "-60px" : "auto",
+                  right: i % 2 !== 0 ? "-60px" : "auto",
+                  width: 200, height: 200,
+                  background: `radial-gradient(circle, rgba(${p.colorRgb},0.2) 0%, transparent 70%)`,
+                  borderRadius: "50%", pointerEvents: "none",
+                }} />
+
+                {/* Sol: İçerik */}
+                <div style={{ padding: "44px 40px", order: i % 2 === 0 ? 0 : 1, position: "relative" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
+                    <span style={{
+                      padding: "4px 12px", borderRadius: 999,
+                      background: `rgba(${p.colorRgb},0.15)`,
+                      border: `1px solid rgba(${p.colorRgb},0.3)`,
+                      fontSize: 11, fontWeight: 700, color: p.color,
+                      letterSpacing: "0.8px", textTransform: "uppercase",
+                    }}>{p.badge}</span>
+                    <span style={{ color: "var(--subtle)", fontSize: 12 }}>{p.tagline}</span>
+                  </div>
+
+                  <h3 style={{
+                    fontSize: "clamp(2rem, 3.5vw, 2.8rem)", fontWeight: 900,
+                    color: "var(--text)", marginBottom: 16, letterSpacing: "-1px", lineHeight: 1.1,
+                  }}>
                     {p.name}
                   </h3>
-                  <p style={{ color: "var(--muted)", fontSize: 15, lineHeight: 1.8, marginBottom: 24 }}>{p.desc}</p>
-                  <a href="#iletisim" style={{
-                    display: "inline-block", padding: "11px 26px",
-                    background: p.color, borderRadius: 9,
-                    color: "#fff", textDecoration: "none", fontSize: 14, fontWeight: 700,
-                    boxShadow: `0 4px 20px ${p.color}44`,
-                  }}>Demo Talep Et</a>
+
+                  <p style={{ color: "var(--muted)", fontSize: 15, lineHeight: 1.8, marginBottom: 28, maxWidth: 420 }}>
+                    {p.desc}
+                  </p>
+
+                  <a href={p.url} target={p.url.startsWith("http") ? "_blank" : undefined}
+                    rel={p.url.startsWith("http") ? "noopener noreferrer" : undefined}
+                    style={{
+                      display: "inline-flex", alignItems: "center", gap: 8,
+                      padding: "13px 28px",
+                      background: p.color,
+                      borderRadius: 10, color: "#fff", textDecoration: "none",
+                      fontSize: 15, fontWeight: 700,
+                      boxShadow: `0 6px 28px rgba(${p.colorRgb},0.4)`,
+                    }}>
+                    Ürünü İncele
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </a>
                 </div>
 
-                <div style={{ order: i % 2 === 0 ? 1 : 0 }}>
+                {/* Sağ: Mock UI + Özellikler */}
+                <div style={{
+                  padding: "44px 36px 44px 20px",
+                  order: i % 2 === 0 ? 1 : 0,
+                  display: "flex", flexDirection: "column", gap: 20,
+                }}>
+                  {/* Mock app window */}
                   <div style={{
-                    padding: "28px 24px",
-                    background: "rgba(6,13,31,0.6)",
-                    borderRadius: 14,
-                    border: "1px solid rgba(255,255,255,0.06)",
-                    backdropFilter: "blur(8px)",
+                    background: "rgba(6,13,31,0.8)",
+                    borderRadius: 12,
+                    border: `1px solid rgba(${p.colorRgb},0.2)`,
+                    overflow: "hidden",
                   }}>
-                    <p style={{ color: "var(--muted)", fontSize: 12, fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase", marginBottom: 16 }}>
-                      Öne Çıkan Özellikler
-                    </p>
-                    {p.features.map((f) => (
-                      <div key={f} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
-                        <div style={{
-                          width: 6, height: 6, borderRadius: "50%",
-                          background: p.color, flexShrink: 0,
+                    {/* Titlebar */}
+                    <div style={{
+                      padding: "10px 14px",
+                      background: `rgba(${p.colorRgb},0.1)`,
+                      borderBottom: `1px solid rgba(${p.colorRgb},0.15)`,
+                      display: "flex", alignItems: "center", gap: 8,
+                    }}>
+                      {["#ef4444","#f59e0b","#22c55e"].map(c => (
+                        <div key={c} style={{ width: 10, height: 10, borderRadius: "50%", background: c, opacity: 0.8 }} />
+                      ))}
+                      <div style={{
+                        flex: 1, height: 18, borderRadius: 4,
+                        background: "rgba(255,255,255,0.06)", marginLeft: 8,
+                      }} />
+                    </div>
+                    {/* Content lines */}
+                    <div style={{ padding: "16px 14px", display: "flex", flexDirection: "column", gap: 8 }}>
+                      {p.mockLines.map((l, idx) => (
+                        <div key={idx} style={{
+                          height: idx === 0 ? 10 : 7,
+                          width: l.w, borderRadius: 4,
+                          background: l.c,
+                          opacity: idx === 0 ? 1 : 0.6,
                         }} />
-                        <span style={{ color: "var(--text)", fontSize: 14, fontWeight: 500 }}>{f}</span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Feature list */}
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px 12px" }}>
+                    {p.features.map((f) => (
+                      <div key={f.text} style={{
+                        display: "flex", alignItems: "center", gap: 8,
+                        padding: "8px 10px",
+                        background: `rgba(${p.colorRgb},0.06)`,
+                        borderRadius: 8,
+                        border: `1px solid rgba(${p.colorRgb},0.12)`,
+                      }}>
+                        <span style={{ fontSize: 14 }}>{f.icon}</span>
+                        <span style={{ color: "var(--text)", fontSize: 12, fontWeight: 500, lineHeight: 1.3 }}>{f.text}</span>
                       </div>
                     ))}
                   </div>
