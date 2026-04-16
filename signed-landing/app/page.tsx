@@ -1,11 +1,5 @@
-import type { Metadata } from "next";
-import Navbar from "@/src/components/SignedNavbar";
-
-export const metadata: Metadata = {
-  title: "Signed | Kurumsal Mail İmza Yönetim Platformu — xShield",
-  description:
-    "Tüm çalışanlarınızın e-posta imzalarını tek panelden yönetin. Marka tutarlılığı, kampanya imzaları, Exchange ve Google Workspace entegrasyonu.",
-};
+"use client";
+import { useState, useEffect } from "react";
 
 const features = [
   {
@@ -87,7 +81,93 @@ const steps = [
   { n: "04", title: "Otomatik Çalışır", desc: "Her giden e-postaya imza otomatik eklenir, takibini yapın." },
 ];
 
-export default function SignedPage() {
+function Navbar() {
+  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  return (
+    <nav style={{
+      position: "fixed", top: 0, left: 0, right: 0, zIndex: 50,
+      transition: "all 0.3s ease",
+      background: scrolled ? "rgba(6,13,31,0.93)" : "transparent",
+      backdropFilter: scrolled ? "blur(14px)" : "none",
+      borderBottom: scrolled ? "1px solid rgba(139,92,246,0.15)" : "1px solid transparent",
+    }}>
+      <div className="container" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 68 }}>
+        <a href="https://xshield.com.tr" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none" }}>
+          <div style={{
+            width: 36, height: 36,
+            background: "linear-gradient(135deg, #8b5cf6, #6d28d9)",
+            borderRadius: 9, display: "flex", alignItems: "center", justifyContent: "center",
+            fontWeight: 900, fontSize: 16, color: "#fff",
+          }}>S</div>
+          <span style={{ fontWeight: 700, fontSize: 20, color: "#f1f5f9", letterSpacing: "-0.5px" }}>
+            <span style={{ color: "#a78bfa" }}>Signed</span>
+            <span style={{ color: "#475569", fontSize: 13, fontWeight: 400, marginLeft: 6 }}>by xShield</span>
+          </span>
+        </a>
+
+        <div className="nav-links" style={{ display: "flex", gap: 28, alignItems: "center" }}>
+          <a href="#ozellikler" className="nav-link" style={{ color: "#94a3b8", textDecoration: "none", fontSize: 14, fontWeight: 500 }}>Özellikler</a>
+          <a href="#fiyat" className="nav-link" style={{ color: "#94a3b8", textDecoration: "none", fontSize: 14, fontWeight: 500 }}>Fiyatlandırma</a>
+          <a href="#iletisim" style={{
+            padding: "9px 22px",
+            background: "linear-gradient(135deg, #8b5cf6, #6d28d9)",
+            borderRadius: 8, color: "#fff", textDecoration: "none",
+            fontSize: 14, fontWeight: 600,
+            boxShadow: "0 4px 16px rgba(139,92,246,0.35)",
+          }}>Demo Talep Et</a>
+        </div>
+
+        <button onClick={() => setOpen(!open)} className="hamburger"
+          style={{ background: "none", border: "none", cursor: "pointer", color: "#f1f5f9", padding: 8 }}>
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+            {open ? (
+              <><line x1="3" y1="3" x2="19" y2="19" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+              <line x1="19" y1="3" x2="3" y2="19" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></>
+            ) : (
+              <><line x1="3" y1="6" x2="19" y2="6" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+              <line x1="3" y1="11" x2="19" y2="11" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+              <line x1="3" y1="16" x2="19" y2="16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></>
+            )}
+          </svg>
+        </button>
+      </div>
+
+      {open && (
+        <div style={{
+          background: "rgba(6,13,31,0.98)", borderTop: "1px solid rgba(139,92,246,0.15)",
+          padding: "16px 24px 24px", display: "flex", flexDirection: "column", gap: 4,
+        }}>
+          {[["Özellikler","#ozellikler"],["Fiyatlandırma","#fiyat"],["Demo Talep Et","#iletisim"]].map(([label, href]) => (
+            <a key={href} href={href} onClick={() => setOpen(false)} style={{
+              color: "#94a3b8", textDecoration: "none", fontSize: 16, fontWeight: 500,
+              padding: "10px 0", borderBottom: "1px solid rgba(139,92,246,0.08)",
+            }}>{label}</a>
+          ))}
+        </div>
+      )}
+
+      <style>{`
+        .nav-links { display: flex !important; }
+        .hamburger  { display: none  !important; }
+        .nav-link:hover { color: #f1f5f9 !important; }
+        @media (max-width: 768px) {
+          .nav-links { display: none !important; }
+          .hamburger { display: flex !important; }
+        }
+      `}</style>
+    </nav>
+  );
+}
+
+export default function SignedLandingPage() {
   return (
     <>
       <Navbar />
@@ -112,14 +192,15 @@ export default function SignedPage() {
         }} />
 
         <div className="container" style={{ position: "relative", zIndex: 1 }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 64, alignItems: "center" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 64, alignItems: "center" }}
+               id="hero-grid">
             <div>
-              <div className="tag" style={{ display: "inline-flex", marginBottom: 24, background: "rgba(139,92,246,0.12)", borderColor: "rgba(139,92,246,0.3)", color: "#a78bfa" }}>
+              <div className="tag" style={{ display: "inline-flex", marginBottom: 24 }}>
                 <span>✉️</span> Mail İmza Yönetim Platformu
               </div>
               <h1 style={{
                 fontSize: "clamp(2.2rem, 4.5vw, 3.6rem)", fontWeight: 900,
-                lineHeight: 1.1, letterSpacing: "-1.5px", marginBottom: 20, color: "var(--text)",
+                lineHeight: 1.1, letterSpacing: "-1.5px", marginBottom: 20, color: "#f1f5f9",
               }}>
                 Kurumsal İmzanızı<br />
                 <span style={{
@@ -128,7 +209,7 @@ export default function SignedPage() {
                 }}>Tek Panelden</span><br />
                 Yönetin
               </h1>
-              <p style={{ color: "var(--muted)", fontSize: 17, lineHeight: 1.8, marginBottom: 36, maxWidth: 460 }}>
+              <p style={{ color: "#94a3b8", fontSize: 17, lineHeight: 1.8, marginBottom: 36, maxWidth: 460 }}>
                 Tüm çalışanlarınızın e-posta imzalarını merkezi olarak kontrol edin.
                 Marka tutarlılığı, kampanya yönetimi ve detaylı analitik bir arada.
               </p>
@@ -157,7 +238,6 @@ export default function SignedPage() {
               borderRadius: 16, overflow: "hidden",
               boxShadow: "0 24px 80px rgba(0,0,0,0.5), 0 0 40px rgba(139,92,246,0.1)",
             }}>
-              {/* Email client titlebar */}
               <div style={{
                 padding: "12px 16px",
                 background: "rgba(139,92,246,0.1)",
@@ -167,24 +247,22 @@ export default function SignedPage() {
                 {["#ef4444","#f59e0b","#22c55e"].map(c => (
                   <div key={c} style={{ width: 11, height: 11, borderRadius: "50%", background: c }} />
                 ))}
-                <span style={{ color: "var(--muted)", fontSize: 12, marginLeft: 8 }}>Yeni E-posta — Outlook</span>
+                <span style={{ color: "#94a3b8", fontSize: 12, marginLeft: 8 }}>Yeni E-posta — Outlook</span>
               </div>
-              {/* Email content */}
               <div style={{ padding: "24px 20px" }}>
                 <div style={{ marginBottom: 16 }}>
                   {[["Kime:", "müşteri@firma.com"], ["Konu:", "Toplantı Talebi — Q2 Planlaması"]].map(([l, v]) => (
                     <div key={l} style={{ display: "flex", gap: 8, marginBottom: 6 }}>
-                      <span style={{ color: "var(--subtle)", fontSize: 12, minWidth: 50 }}>{l}</span>
-                      <span style={{ color: "var(--muted)", fontSize: 12 }}>{v}</span>
+                      <span style={{ color: "#475569", fontSize: 12, minWidth: 50 }}>{l}</span>
+                      <span style={{ color: "#94a3b8", fontSize: 12 }}>{v}</span>
                     </div>
                   ))}
                 </div>
-                <div style={{ borderTop: "1px solid var(--border)", paddingTop: 16, marginBottom: 16 }}>
+                <div style={{ borderTop: "1px solid rgba(139,92,246,0.15)", paddingTop: 16, marginBottom: 16 }}>
                   {[80, 95, 70, 55].map((w, i) => (
                     <div key={i} style={{ height: 7, width: `${w}%`, background: "#1e3a5f", borderRadius: 3, marginBottom: 8 }} />
                   ))}
                 </div>
-                {/* Signature block */}
                 <div style={{
                   borderTop: "2px solid #8b5cf6",
                   paddingTop: 14,
@@ -200,12 +278,11 @@ export default function SignedPage() {
                       color: "#fff", fontWeight: 800, fontSize: 16, flexShrink: 0,
                     }}>A</div>
                     <div>
-                      <div style={{ color: "var(--text)", fontWeight: 700, fontSize: 13 }}>Ahmet Yılmaz</div>
+                      <div style={{ color: "#f1f5f9", fontWeight: 700, fontSize: 13 }}>Ahmet Yılmaz</div>
                       <div style={{ color: "#a78bfa", fontSize: 11, marginBottom: 4 }}>Satış Müdürü — xShield Teknoloji</div>
-                      <div style={{ color: "var(--muted)", fontSize: 11 }}>📞 +90 212 000 00 00 &nbsp;·&nbsp; 🌐 xshield.com.tr</div>
+                      <div style={{ color: "#94a3b8", fontSize: 11 }}>📞 +90 212 000 00 00 · 🌐 xshield.com.tr</div>
                     </div>
                   </div>
-                  {/* Campaign banner */}
                   <div style={{
                     marginTop: 10, padding: "8px 10px",
                     background: "linear-gradient(90deg, rgba(139,92,246,0.2), rgba(99,102,241,0.2))",
@@ -227,20 +304,17 @@ export default function SignedPage() {
       <section className="section" style={{ background: "var(--surface)" }}>
         <div className="container">
           <div style={{ textAlign: "center", marginBottom: 56 }}>
-            <h2 style={{ fontSize: "clamp(1.8rem, 3vw, 2.4rem)", fontWeight: 700, color: "var(--text)", marginBottom: 12 }}>
+            <h2 style={{ fontSize: "clamp(1.8rem, 3vw, 2.4rem)", fontWeight: 700, color: "#f1f5f9", marginBottom: 12 }}>
               4 Adımda Kurulum
             </h2>
-            <p style={{ color: "var(--muted)", fontSize: 16 }}>Teknik bilgi gerektirmez, kurulum süresi 30 dakikadan az.</p>
+            <p style={{ color: "#94a3b8", fontSize: 16 }}>Teknik bilgi gerektirmez, kurulum süresi 30 dakikadan az.</p>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 24 }}>
             {steps.map((s) => (
-              <div key={s.n} className="glass-card" style={{ padding: "28px 24px", position: "relative" }}>
-                <div style={{
-                  fontSize: 36, fontWeight: 900, color: "rgba(139,92,246,0.2)",
-                  lineHeight: 1, marginBottom: 12,
-                }}>{s.n}</div>
-                <h3 style={{ color: "var(--text)", fontWeight: 700, fontSize: 16, marginBottom: 8 }}>{s.title}</h3>
-                <p style={{ color: "var(--muted)", fontSize: 14, lineHeight: 1.6 }}>{s.desc}</p>
+              <div key={s.n} className="glass-card" style={{ padding: "28px 24px" }}>
+                <div style={{ fontSize: 36, fontWeight: 900, color: "rgba(139,92,246,0.2)", lineHeight: 1, marginBottom: 12 }}>{s.n}</div>
+                <h3 style={{ color: "#f1f5f9", fontWeight: 700, fontSize: 16, marginBottom: 8 }}>{s.title}</h3>
+                <p style={{ color: "#94a3b8", fontSize: 14, lineHeight: 1.6 }}>{s.desc}</p>
               </div>
             ))}
           </div>
@@ -251,13 +325,11 @@ export default function SignedPage() {
       <section id="ozellikler" className="section">
         <div className="container">
           <div style={{ textAlign: "center", marginBottom: 56 }}>
-            <div className="tag" style={{ display: "inline-flex", marginBottom: 16, background: "rgba(139,92,246,0.12)", borderColor: "rgba(139,92,246,0.3)", color: "#a78bfa" }}>
-              <span>⚡</span> Özellikler
-            </div>
-            <h2 style={{ fontSize: "clamp(1.8rem, 3vw, 2.4rem)", fontWeight: 700, color: "var(--text)", marginBottom: 12 }}>
+            <div className="tag" style={{ marginBottom: 16 }}><span>⚡</span> Özellikler</div>
+            <h2 style={{ fontSize: "clamp(1.8rem, 3vw, 2.4rem)", fontWeight: 700, color: "#f1f5f9", marginBottom: 12 }}>
               İhtiyacınız Olan Her Şey
             </h2>
-            <p style={{ color: "var(--muted)", fontSize: 16, maxWidth: 480, margin: "0 auto" }}>
+            <p style={{ color: "#94a3b8", fontSize: 16, maxWidth: 480, margin: "0 auto" }}>
               E-posta imzanızı sadece bir imza olmaktan çıkarın, marka iletişim aracına dönüştürün.
             </p>
           </div>
@@ -272,8 +344,8 @@ export default function SignedPage() {
                   fontSize: 20,
                 }}>{f.icon}</div>
                 <div>
-                  <h3 style={{ color: "var(--text)", fontWeight: 700, fontSize: 15, marginBottom: 6 }}>{f.title}</h3>
-                  <p style={{ color: "var(--muted)", fontSize: 13, lineHeight: 1.65 }}>{f.desc}</p>
+                  <h3 style={{ color: "#f1f5f9", fontWeight: 700, fontSize: 15, marginBottom: 6 }}>{f.title}</h3>
+                  <p style={{ color: "#94a3b8", fontSize: 13, lineHeight: 1.65 }}>{f.desc}</p>
                 </div>
               </div>
             ))}
@@ -285,22 +357,18 @@ export default function SignedPage() {
       <section id="fiyat" className="section" style={{ background: "var(--surface)" }}>
         <div className="container">
           <div style={{ textAlign: "center", marginBottom: 56 }}>
-            <div className="tag" style={{ display: "inline-flex", marginBottom: 16, background: "rgba(139,92,246,0.12)", borderColor: "rgba(139,92,246,0.3)", color: "#a78bfa" }}>
-              <span>💎</span> Fiyatlandırma
-            </div>
-            <h2 style={{ fontSize: "clamp(1.8rem, 3vw, 2.4rem)", fontWeight: 700, color: "var(--text)", marginBottom: 12 }}>
+            <div className="tag" style={{ marginBottom: 16 }}><span>💎</span> Fiyatlandırma</div>
+            <h2 style={{ fontSize: "clamp(1.8rem, 3vw, 2.4rem)", fontWeight: 700, color: "#f1f5f9", marginBottom: 12 }}>
               Şeffaf Fiyatlar
             </h2>
-            <p style={{ color: "var(--muted)", fontSize: 16 }}>Gizli ücret yok. İhtiyacınıza göre plan seçin.</p>
+            <p style={{ color: "#94a3b8", fontSize: 16 }}>Gizli ücret yok. İhtiyacınıza göre plan seçin.</p>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 24, maxWidth: 900, margin: "0 auto" }}>
+          <div id="plan-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 24, maxWidth: 900, margin: "0 auto" }}>
             {plans.map((p) => (
               <div key={p.name} style={{
-                padding: "36px 28px",
-                borderRadius: 20,
-                background: p.highlight ? `rgba(139,92,246,0.1)` : "rgba(15,32,53,0.8)",
-                border: `1px solid ${p.highlight ? "rgba(139,92,246,0.5)" : "var(--border)"}`,
-                position: "relative",
+                padding: "36px 28px", borderRadius: 20, position: "relative",
+                background: p.highlight ? "rgba(139,92,246,0.1)" : "rgba(15,32,53,0.8)",
+                border: `1px solid ${p.highlight ? "rgba(139,92,246,0.5)" : "rgba(139,92,246,0.18)"}`,
               }}>
                 {p.highlight && (
                   <div style={{
@@ -309,12 +377,12 @@ export default function SignedPage() {
                     fontSize: 11, fontWeight: 700, color: "#fff", whiteSpace: "nowrap",
                   }}>En Popüler</div>
                 )}
-                <div style={{ color: "var(--muted)", fontSize: 13, fontWeight: 600, marginBottom: 8 }}>{p.name}</div>
+                <div style={{ color: "#94a3b8", fontSize: 13, fontWeight: 600, marginBottom: 8 }}>{p.name}</div>
                 <div style={{ display: "flex", alignItems: "baseline", gap: 4, marginBottom: 6 }}>
-                  <span style={{ fontSize: 34, fontWeight: 900, color: "var(--text)" }}>{p.price}</span>
-                  <span style={{ color: "var(--muted)", fontSize: 14 }}>{p.period}</span>
+                  <span style={{ fontSize: 34, fontWeight: 900, color: "#f1f5f9" }}>{p.price}</span>
+                  <span style={{ color: "#94a3b8", fontSize: 14 }}>{p.period}</span>
                 </div>
-                <div style={{ color: "var(--muted)", fontSize: 13, marginBottom: 24 }}>{p.desc}</div>
+                <div style={{ color: "#94a3b8", fontSize: 13, marginBottom: 24 }}>{p.desc}</div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 28 }}>
                   {p.features.map((f) => (
                     <div key={f} style={{ display: "flex", gap: 10, alignItems: "center" }}>
@@ -323,7 +391,7 @@ export default function SignedPage() {
                           <path d="M1 4l2 2 4-4" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
                       </div>
-                      <span style={{ color: "var(--text)", fontSize: 13 }}>{f}</span>
+                      <span style={{ color: "#f1f5f9", fontSize: 13 }}>{f}</span>
                     </div>
                   ))}
                 </div>
@@ -346,46 +414,47 @@ export default function SignedPage() {
       <section id="iletisim" className="section">
         <div className="container" style={{ maxWidth: 640 }}>
           <div style={{ textAlign: "center", marginBottom: 40 }}>
-            <h2 style={{ fontSize: "clamp(1.8rem, 3vw, 2.4rem)", fontWeight: 700, color: "var(--text)", marginBottom: 12 }}>
-              Demo <span style={{
+            <h2 style={{ fontSize: "clamp(1.8rem, 3vw, 2.4rem)", fontWeight: 700, color: "#f1f5f9", marginBottom: 12 }}>
+              Demo{" "}
+              <span style={{
                 background: "linear-gradient(135deg, #a78bfa, #8b5cf6)",
                 WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
               }}>Talep Et</span>
             </h2>
-            <p style={{ color: "var(--muted)", fontSize: 16 }}>
+            <p style={{ color: "#94a3b8", fontSize: 16 }}>
               Uzmanlarımız size özel sunum yapacak, sorularınızı yanıtlayacak.
             </p>
           </div>
           <div className="glass-card" style={{ padding: "36px 32px" }}>
             <form style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
-                {[["Ad Soyad *", "Ahmet Yılmaz", "text"], ["Firma *", "Şirket A.Ş.", "text"]].map(([l, p, t]) => (
+              <div id="form-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+                {[["Ad Soyad *", "Ahmet Yılmaz", "text"], ["Firma *", "Şirket A.Ş.", "text"]].map(([l, ph, t]) => (
                   <div key={l}>
-                    <label style={{ display: "block", color: "var(--muted)", fontSize: 12, fontWeight: 600, marginBottom: 6 }}>{l}</label>
-                    <input type={t} placeholder={p} style={{
+                    <label style={{ display: "block", color: "#94a3b8", fontSize: 12, fontWeight: 600, marginBottom: 6 }}>{l}</label>
+                    <input type={t} placeholder={ph} style={{
                       width: "100%", padding: "11px 14px",
                       background: "rgba(139,92,246,0.06)", border: "1px solid rgba(139,92,246,0.2)",
-                      borderRadius: 8, color: "var(--text)", fontSize: 14, outline: "none",
+                      borderRadius: 8, color: "#f1f5f9", fontSize: 14, outline: "none",
                     }} />
                   </div>
                 ))}
               </div>
-              {[["E-posta *", "ahmet@firma.com", "email"], ["Telefon", "+90 5XX XXX XX XX", "tel"]].map(([l, p, t]) => (
+              {[["E-posta *", "ahmet@firma.com", "email"], ["Telefon", "+90 5XX XXX XX XX", "tel"]].map(([l, ph, t]) => (
                 <div key={l}>
-                  <label style={{ display: "block", color: "var(--muted)", fontSize: 12, fontWeight: 600, marginBottom: 6 }}>{l}</label>
-                  <input type={t} placeholder={p} style={{
+                  <label style={{ display: "block", color: "#94a3b8", fontSize: 12, fontWeight: 600, marginBottom: 6 }}>{l}</label>
+                  <input type={t} placeholder={ph} style={{
                     width: "100%", padding: "11px 14px",
                     background: "rgba(139,92,246,0.06)", border: "1px solid rgba(139,92,246,0.2)",
-                    borderRadius: 8, color: "var(--text)", fontSize: 14, outline: "none",
+                    borderRadius: 8, color: "#f1f5f9", fontSize: 14, outline: "none",
                   }} />
                 </div>
               ))}
               <div>
-                <label style={{ display: "block", color: "var(--muted)", fontSize: 12, fontWeight: 600, marginBottom: 6 }}>Kaç kullanıcı var?</label>
+                <label style={{ display: "block", color: "#94a3b8", fontSize: 12, fontWeight: 600, marginBottom: 6 }}>Kaç kullanıcı var?</label>
                 <select style={{
                   width: "100%", padding: "11px 14px",
                   background: "rgba(139,92,246,0.06)", border: "1px solid rgba(139,92,246,0.2)",
-                  borderRadius: 8, color: "var(--text)", fontSize: 14, outline: "none",
+                  borderRadius: 8, color: "#f1f5f9", fontSize: 14, outline: "none",
                 }}>
                   <option>1-25 kullanıcı</option>
                   <option>26-100 kullanıcı</option>
@@ -409,13 +478,13 @@ export default function SignedPage() {
 
       {/* Footer */}
       <footer style={{
-        background: "var(--surface)", borderTop: "1px solid var(--border)",
+        background: "var(--surface)", borderTop: "1px solid rgba(139,92,246,0.18)",
         padding: "32px 0", textAlign: "center",
       }}>
         <div className="container">
-          <p style={{ color: "var(--subtle)", fontSize: 13 }}>
+          <p style={{ color: "#475569", fontSize: 13 }}>
             © {new Date().getFullYear()} xShield Teknoloji — Signed &nbsp;·&nbsp;
-            <a href="https://xshield.com.tr" style={{ color: "var(--muted)", textDecoration: "none" }}>xshield.com.tr</a>
+            <a href="https://xshield.com.tr" style={{ color: "#94a3b8", textDecoration: "none" }}>xshield.com.tr</a>
           </p>
         </div>
       </footer>
@@ -423,8 +492,8 @@ export default function SignedPage() {
       <style>{`
         @media (max-width: 768px) {
           #hero-grid { grid-template-columns: 1fr !important; }
-          #plan-grid { grid-template-columns: 1fr !important; }
-          form > div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+          #plan-grid  { grid-template-columns: 1fr !important; }
+          #form-grid  { grid-template-columns: 1fr !important; }
         }
       `}</style>
     </>
