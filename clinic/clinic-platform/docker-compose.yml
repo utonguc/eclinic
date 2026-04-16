@@ -78,6 +78,16 @@ services:
     ports:
       - "3000:3000"
 
+  xshield-web:
+    build:
+      context: ../../xshield
+    container_name: xshield_web
+    restart: unless-stopped
+    environment:
+      NODE_ENV: development
+    ports:
+      - "3001:3001"
+
   nginx:
     image: nginx:stable
     container_name: clinic_nginx
@@ -85,6 +95,7 @@ services:
     depends_on:
       - frontend
       - backend
+      - xshield-web
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
     ports:
