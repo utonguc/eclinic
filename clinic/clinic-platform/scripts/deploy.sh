@@ -24,9 +24,15 @@ VERSION_FILE="$ROOT_DIR/frontend/lib/version.ts"
 # Versiyonu oku
 APP_VERSION=$(grep 'APP_VERSION' "$VERSION_FILE" 2>/dev/null | sed 's/.*"\(.*\)".*/\1/' || echo "unknown")
 
+# Git'ten build versiyonu üret:
+#   - Tag varsa: v1.0.0
+#   - Tag yoksa: v1.0.0-3-gabcdef1 (son tag'den kaç commit uzakta + hash)
+#   - Hiç tag yoksa: sadece commit hash (abcdef1)
+export BUILD_VERSION=$(git describe --tags --always 2>/dev/null || echo "$APP_VERSION")
+
 echo "================================================"
 echo " xShield e-Clinic — Production Deployment"
-echo " Versiyon : v${APP_VERSION}"
+echo " Versiyon : v${APP_VERSION}  (build: ${BUILD_VERSION})"
 echo " Tarih    : $(date '+%Y-%m-%d %H:%M:%S')"
 echo "================================================"
 
@@ -62,15 +68,15 @@ fi
 # 2. Build
 echo ""
 echo "[2/3] Konteynerler build ediliyor... (bu birkaç dakika sürebilir)"
-docker-compose -f docker-compose.yml -f docker-compose.prod.yml \
-  --env-file .env.prod \
+docker compose --env-file .env.prod \
+  -f docker-compose.yml -f docker-compose.prod.yml \
   build --no-cache
 
 # 3. Restart (veri silinmez)
 echo ""
 echo "[3/3] Servisler yeniden başlatılıyor..."
-docker-compose -f docker-compose.yml -f docker-compose.prod.yml \
-  --env-file .env.prod \
+docker compose --env-file .env.prod \
+  -f docker-compose.yml -f docker-compose.prod.yml \
   up -d --remove-orphans
 
 echo ""
