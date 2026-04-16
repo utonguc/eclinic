@@ -140,7 +140,7 @@ public class PlatformController : ControllerBase
             .OrderByDescending(t => t.UpdatedAtUtc)
             .ToListAsync();
 
-        return Ok(tickets.Select(ToResponse));
+        return Ok(tickets.Select(t => t.ToResponse()));
     }
 }
 
